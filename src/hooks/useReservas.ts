@@ -27,10 +27,14 @@ export function useReservas(params: ListReservasParams = {}) {
     setState((prev) => ({ ...prev, loading: true, error: null }))
     try {
       const result = await reservasService.list({ salaId, page, pageSize, orderBy })
+      // Suporta tanto a resposta paginada { data, total, ... } quanto array direto (retrocompatibilidade)
+      const data = Array.isArray(result) ? result : (Array.isArray(result.data) ? result.data : [])
+      const total = Array.isArray(result) ? result.length : (result.total ?? data.length)
+      const totalPages = Array.isArray(result) ? 1 : (result.totalPages ?? 1)
       setState({
-        reservas: result.data,
-        total: result.total,
-        totalPages: result.totalPages,
+        reservas: data,
+        total,
+        totalPages,
         loading: false,
         error: null,
       })
