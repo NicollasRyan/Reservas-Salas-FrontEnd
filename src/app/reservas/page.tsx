@@ -103,7 +103,7 @@ export default function ReservasPage() {
             <ReservaCardSkeleton key={i} />
           ))}
         </div>
-      ) : reservas.length === 0 && !error ? (
+      ) : Array.isArray(reservas) && reservas.length === 0 && !error ? (
         total === 0 && selectedSalaId === 'all' ? (
           <EmptyState
             icon={CalendarRange}
@@ -127,7 +127,7 @@ export default function ReservasPage() {
         )
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {reservas.map((reserva) => (
+          {(Array.isArray(reservas) ? reservas : []).map((reserva) => (
             <ReservaCard
               key={reserva.id}
               reserva={reserva}

@@ -20,7 +20,8 @@ export function useSalas() {
   const fetchSalas = useCallback(async () => {
     setState((prev) => ({ ...prev, loading: true, error: null }))
     try {
-      const salas = await salasService.list()
+      const result = await salasService.list()
+      const salas = Array.isArray(result) ? result : []
       setState({ salas, loading: false, error: null })
     } catch (err) {
       setState((prev) => ({
